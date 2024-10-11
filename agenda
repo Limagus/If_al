@@ -1,0 +1,333 @@
+´<!DOCTYPE html>  
+<html lang="pt-BR">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Tabela de Horários Acadêmicos</title>  
+    <style>  
+        table {  
+            width: 100%;  
+            border-collapse: collapse;  
+            margin-top: 20px;  
+        }  
+        th, td {  
+            border: 1px solid #000;  
+            padding: 8px;  
+            text-align: center;  
+        }  
+        th {  
+             
+            background-color: rgb(56, 150, 56); 
+        }  
+        td{
+            background-color: rgb(220, 236, 230);
+        }
+
+        h2{
+        text-align: center;
+        
+        font-size: 50px; 
+              
+        }
+
+    </style>  
+</head>  
+<body>  
+    <h2>Tabela de Horários Acadêmicos</h2>  
+
+    <label for="filtro">Filtrar por:</label>  
+    <select id="filtro">  
+        <option value="turma">Turma</option>  
+        <option value="sala">Sala</option>  
+        <option value="professor">Professor</option>  
+    </select>  
+
+    <label for="opcoes">Selecione:</label>  
+    <select id="opcoes"></select>  
+
+    <button id="mostrar">Mostrar Horários</button>  
+
+    <div id="resultado"></div>  
+
+    <script>  
+        const horarios = {  
+            '1º Agropecuária Matutino ': {  
+                'Sala 101': {  
+                    'Gerardo': [  
+                        { dia: 'Segunda', horario: '07:00 - 07:50' },  
+                        { dia: 'Quarta', horario: '10:00 - 11:00' },
+                        { dia: 'Sexta', horario: '9:00 - 11:00' }  
+                    ],  
+                    'Ana Fireman 2': [  
+                        { dia: 'Terça', horario: '09:00 - 10:00' }  
+                    ],
+                    'Madson Pai Vei': [  
+                        { dia: 'Terça', horario: '07:00 - 07:50' },  
+                        { dia: 'Quarta', horario: '11:40 - 12:30' },
+                        { dia: 'Quinta', horario: '9:30 - 11:00' }  
+                    ]  
+                }  
+            },  
+            '1º Agroindústria Matutino': {  
+                'Sala 102': {  
+                    'Iatanailton': [  
+                        { dia: 'Quinta', horario: '08:00 - 09:00' }  
+                    ]  
+                }  
+            },  
+            '1º Agroecologia Matutino': {  
+                'Sala 103': {  
+                    'Iatanailton': [  
+                        { dia: 'Segunda', horario: '07:00 - 07:50' }  
+                    ]  
+                }  
+            },
+            '2º Agropecuária Matutino ': {  
+                'Sala 104': {  
+                    'Gerardo': [  
+                        { dia: 'Segunda', horario: '07:00 - 07:50' },  
+                        { dia: 'Quarta', horario: '10:00 - 11:00' },
+                        { dia: 'Sexta', horario: '9:00 - 11:00' }  
+                    ],  
+                    'Ana Fireman 2': [  
+                        { dia: 'Terça', horario: '09:00 - 10:00' }  
+                    ]  
+                }  
+            },  
+            '2º Agroindústria Matutino': {  
+                'Sala 105': {  
+                    'Iatanailton': [  
+                        { dia: 'Quinta', horario: '08:00 - 09:00' }  
+                    ]  
+                }  
+            },  
+            '2º Agroecologia Matutino': {  
+                'Sala 106': {  
+                    'Iatanailton': [  
+                        { dia: 'Segunda', horario: '07:00 - 07:50' }  
+                    ]  
+                }  
+            },
+            '3º Agropecuária Matutino ': {  
+                'Sala 107': {  
+                    'Gerardo': [  
+                        { dia: 'Segunda', horario: '07:00 - 07:50' },  
+                        { dia: 'Quarta', horario: '10:00 - 11:00' },
+                        { dia: 'Sexta', horario: '9:00 - 11:00' }  
+                    ],  
+                    'Ana Fireman 2': [  
+                        { dia: 'Terça', horario: '09:00 - 10:00' }  
+                    ]  
+                }  
+            },  
+            '3º Agroindústria Matutino': {  
+                'Sala 108': {  
+                    'Iatanailton': [  
+                        { dia: 'Quinta', horario: '08:00 - 09:00' }  
+                    ]  
+                }  
+            },  
+            '3º Agroecologia Matutino': {  
+                'Sala 109': {  
+                    'Iatanailton': [  
+                        { dia: 'Segunda', horario: '07:00 - 07:50' }  
+                    ]  
+                }  
+            },
+
+
+            //Turma da Tarde
+            '1º Agropecuária Vespertino ': {  
+                'Sala 101': {  
+                    'Gerardo': [  
+                        { dia: 'Segunda', horario: '07:00 - 07:50' },  
+                        { dia: 'Quarta', horario: '10:00 - 11:00' },
+                        { dia: 'Sexta', horario: '9:00 - 11:00' }  
+                    ],  
+                    'Ana Fireman 2': [  
+                        { dia: 'Terça', horario: '09:00 - 10:00' }  
+                    ]  
+                }  
+            },  
+            '1º Agroindústria Vespertino': {  
+                'Sala 102': {  
+                    'Iatanailton': [  
+                        { dia: 'Quinta', horario: '08:00 - 09:00' }  
+                    ]  
+                }  
+            },  
+            '2º Agropecuária Vespertino ': {  
+                'Sala 104': {  
+                    'Gerardo': [  
+                        { dia: 'Segunda', horario: '07:00 - 07:50' },  
+                        { dia: 'Quarta', horario: '10:00 - 11:00' },
+                        { dia: 'Sexta', horario: '9:00 - 11:00' }  
+                    ],  
+                    'Ana Fireman 2': [  
+                        { dia: 'Terça', horario: '09:00 - 10:00' }  
+                    ]  
+                }  
+            },  
+            '2º Agroindústria Vespertino': {  
+                'Sala 105': {  
+                    'Iatanailton': [  
+                        { dia: 'Quinta', horario: '08:00 - 09:00' }  
+                    ]  
+                }  
+            },  
+            '3º Agropecuária Vespertino': {  
+                'Sala 107': {  
+                    'Gerardo': [  
+                        { dia: 'Segunda', horario: '07:00 - 07:50' },  
+                        { dia: 'Quarta', horario: '10:00 - 11:00' },
+                        { dia: 'Sexta', horario: '9:00 - 11:00' }  
+                    ],  
+                    'Ana Fireman 2': [  
+                        { dia: 'Terça', horario: '09:00 - 10:00' }  
+                    ]  
+                }  
+            },  
+            '3º Agroindústria Vespertino': {  
+                'Auditorio': {  
+                    'Iatanailton': [  
+                        { dia: 'Quinta', horario: '08:00 - 09:00' }  
+                    ]  
+                }  
+            },
+
+
+            //Turma do EJA
+            'Técnico de Alimentos 1º Ano': {  
+                'Sala 110': {  
+                    'Gerardo': [  
+                        { dia: 'Segunda', horario: '07:00 - 07:50' },  
+                        { dia: 'Segunda', horario: '07:50 - 08:40' },
+                        { dia: 'Sexta', horario: '9:00 - 11:00' },
+                        { dia: 'Segunda', horario: '07:00 - 07:50' },  
+                        { dia: 'Quarta', horario: '10:00 - 11:00' },
+                        { dia: 'Sexta', horario: '9:00 - 11:00' }   
+                    ],  
+                    'Ana Fireman 2': [  
+                        { dia: 'Terça', horario: '09:00 - 10:00' }  
+                    ]  
+                }  
+            },  
+            'Técnico de Alimentos 2º Ano': {  
+                'Sala 111': {  
+                    'Iatanailton': [  
+                        { dia: 'Quinta', horario: '08:00 - 09:00' }  
+                    ]  
+                }  
+            },  
+
+            'Técnico de Alimentos 3º Ano': {  
+                'Sala 112': {  
+                    'Iatanailton': [  
+                        { dia: 'Quinta', horario: '08:00 - 09:00' }  
+                    ]  
+                }  
+            }  
+
+        };  
+
+        const filtroSelect = document.getElementById('filtro');  
+        const opcoesSelect = document.getElementById('opcoes');  
+        const resultadoDiv = document.getElementById('resultado');  
+
+        // Função para atualizar as opções com base no filtro escolhido  
+        function atualizarOpcoes() {  
+            const filtro = filtroSelect.value;  
+            opcoesSelect.innerHTML = ''; // Limpa as opções anteriores  
+
+            const opcoes = new Set();  
+            if (filtro === 'turma') {  
+                for (const turma in horarios) {  
+                    opcoes.add(turma);  
+                }  
+            } else if (filtro === 'sala') {  
+                for (const turma in horarios) {  
+                    for (const sala in horarios[turma]) {  
+                        opcoes.add(sala);  
+                    }  
+                }  
+            } else if (filtro === 'professor') {  
+                for (const turma in horarios) {  
+                    for (const sala in horarios[turma]) {  
+                        for (const professor in horarios[turma][sala]) {  
+                            opcoes.add(professor);  
+                        }  
+                    }  
+                }  
+            }  
+
+            opcoes.forEach(opcao => {  
+                const optionElement = document.createElement('option');  
+                optionElement.value = opcao;  
+                optionElement.textContent = opcao;  
+                opcoesSelect.appendChild(optionElement);  
+            });  
+        }  
+
+        // Função para mostrar os horários com base na seleção  
+        function mostrarHorarios() {  
+            const filtro = filtroSelect.value;  
+            const selecao = opcoesSelect.value;  
+            resultadoDiv.innerHTML = '';  
+
+            let horariosFiltrados = [];  
+
+            if (filtro === 'turma') {  
+                // Para a turma selecionada, busca todas as salas e professores  
+                const turma = horarios[selecao];  
+                for (const sala in turma) {  
+                    for (const professor in turma[sala]) {  
+                        turma[sala][professor].forEach(horario => {  
+                            horariosFiltrados.push({ turma: selecao, sala, professor, horario });  
+                        });  
+                    }  
+                }  
+            } else if (filtro === 'sala') {  
+                for (const turma in horarios) {  
+                    if (horarios[turma][selecao]) {  
+                        for (const professor in horarios[turma][selecao]) {  
+                            horarios[turma][selecao][professor].forEach(horario => {  
+                                horariosFiltrados.push({ turma, sala: selecao, professor, horario });  
+                            });  
+                        }  
+                    }  
+                }  
+            } else if (filtro === 'professor') {  
+                for (const turma in horarios) {  
+                    for (const sala in horarios[turma]) {  
+                        if (horarios[turma][sala][selecao]) {  
+                            horarios[turma][sala][selecao].forEach(horario => {  
+                                horariosFiltrados.push({ turma, sala, professor: selecao, horario });  
+                            });  
+                        }  
+                    }  
+                }  
+            }  
+
+            // Exibir resultados  
+            if (horariosFiltrados.length > 0) {  
+                let tabelaHTML = '<table><tr><th>Turma</th><th>Sala</th><th>Professor</th><th>Dia</th><th>Horário</th></tr>';  
+                
+                horariosFiltrados.forEach(item => {  
+                    tabelaHTML += `<tr><td>${item.turma}</td><td>${item.sala}</td><td>${item.professor}</td><td>${item.horario.dia}</td><td>${item.horario.horario}</td></tr>`;  
+                });  
+
+                tabelaHTML += '</table>';  
+                resultadoDiv.innerHTML = tabelaHTML;  
+            } else {  
+                resultadoDiv.innerHTML = 'Nenhum horário encontrado.';  
+            }  
+        }  
+
+        filtroSelect.addEventListener('change', atualizarOpcoes);  
+        document.getElementById('mostrar').addEventListener('click', mostrarHorarios);  
+
+        // Inicializa as opções ao carregar a página  
+        atualizarOpcoes();  
+    </script>  
+</body>  
+</html>
